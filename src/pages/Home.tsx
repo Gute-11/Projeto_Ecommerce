@@ -22,7 +22,7 @@ const Home = () => {
         <div className="container mx-auto px-4 py-4 flex items-center justify-between">
           <div className="flex items-center gap-2">
             <ShoppingBag className="w-8 h-8 text-primary" />
-            <h1 className="text-2xl font-bold text-foreground">ShopHub</h1>
+            <h1 className="text-2xl font-bold text-foreground">FlexHub</h1>
           </div>
           <div className="flex gap-4">
             <Button asChild variant="outline">
@@ -39,7 +39,7 @@ const Home = () => {
       <section className="bg-gradient-to-b from-primary/10 to-background py-20">
         <div className="container mx-auto px-4 text-center">
           <h2 className="text-4xl md:text-6xl font-bold text-foreground mb-6">
-            Bem-vindo ao ShopHub
+            Bem-vindo ao FlexHub
           </h2>
           <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
             Os melhores produtos eletrônicos com as melhores ofertas. 
@@ -54,7 +54,7 @@ const Home = () => {
       {/* Features */}
       <section className="py-16 container mx-auto px-4">
         <h3 className="text-3xl font-bold text-center text-foreground mb-12">
-          Por que escolher a ShopHub?
+          Por que escolher a FlexHub?
         </h3>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           <Card className="p-6 text-center hover:shadow-lg transition-shadow">
@@ -107,7 +107,7 @@ const Home = () => {
       {/* Footer */}
       <footer className="border-t bg-card py-8">
         <div className="container mx-auto px-4 text-center text-muted-foreground">
-          <p>&copy; 2024 ShopHub. Todos os direitos reservados.</p>
+          <p>&copy; 2025 FlexHub. Todos os direitos reservados.</p>
         </div>
       </footer>
     </div>

@@ -23,7 +23,7 @@ const Header = () => {
         <div className="flex items-center justify-between">
           <Link to="/shop" className="flex items-center gap-2">
             <ShoppingBag className="w-8 h-8 text-primary" />
-            <h1 className="text-2xl font-bold text-foreground">ShopHub</h1>
+            <h1 className="text-2xl font-bold text-foreground">FlexHub</h1>
           </Link>
 
           <nav className="hidden md:flex items-center gap-6">
