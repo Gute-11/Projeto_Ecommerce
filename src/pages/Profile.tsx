@@ -11,10 +11,10 @@ import { toast } from 'sonner';
 import { User } from 'lucide-react';
 
 const Profile = () => {
-  const { user } = useAuth();
+  const { user } = useAuth(); //herda dados e comportamentos do AuthProvider
   const navigate = useNavigate();
   
-  const [name, setName] = useState('');
+  const [name, setName] = useState('');// atributos
   const [email, setEmail] = useState('');
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -40,8 +40,8 @@ const Profile = () => {
       if (error) throw error;
 
       if (data) {
-        setName(data.name || '');
-        setEmail(data.email || '');
+        setName(data.name || ''); //função encapsulada de alterar nome
+        setEmail(data.email || ''); // encapsulado
       }
     } catch (error) {
       console.error('Erro ao carregar perfil:', error);

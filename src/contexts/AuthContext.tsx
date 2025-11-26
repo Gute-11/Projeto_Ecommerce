@@ -12,11 +12,11 @@ interface AuthContextType {
   signIn: (email: string, password: string) => Promise<{ error: any }>;
   signOut: () => Promise<void>;
 }
-
+//AuthContext é um objeto global que centraliza todo o comportamento e dados relacionados ao usuário logado.
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
-
+// atributos do objeto componente AuthProvider
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [user, setUser] = useState<User | null>(null);
+  const [user, setUser] = useState<User | null>(null); //atributos
   const [session, setSession] = useState<Session | null>(null);
   const [loading, setLoading] = useState(true);
   const [isAdmin, setIsAdmin] = useState(false);
@@ -69,7 +69,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
     return () => subscription.unsubscribe();
   }, []);
-
+  //Encapsulamento, pois, é uma função que protegem e controlam o estado do usuário
   const signUp = async (email: string, password: string, name: string) => {
     try {
       const { error } = await supabase.auth.signUp({
@@ -95,7 +95,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       return { error };
     }
   };
-
+  //Encapsulamento, pois, é uma função que protegem e controlam o estado do usuário
   const signIn = async (email: string, password: string) => {
     try {
       const { error } = await supabase.auth.signInWithPassword({
@@ -115,7 +115,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       return { error };
     }
   };
-
+  //Encapsulamento, pois, é uma função que protegem e controlam o estado das classes
   const signOut = async () => {
     try {
       await supabase.auth.signOut();
@@ -124,14 +124,14 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       toast.error('Erro ao fazer logout');
     }
   };
-
+  //Abstração, pois, abstrai toda parte lógica da autenticação expondo apenas os objetos e funções:
   return (
     <AuthContext.Provider value={{ user, session, loading, isAdmin, signUp, signIn, signOut }}>
       {children}
     </AuthContext.Provider>
   );
 };
-
+ 
 export const useAuth = () => {
   const context = useContext(AuthContext);
   if (context === undefined) {

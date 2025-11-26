@@ -8,7 +8,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { ShoppingBag } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { z } from 'zod';
-
+// Encapsula as regras e Abstrai detalhes de validação
 const loginSchema = z.object({
   email: z.string().email('Email inválido'),
   password: z.string().min(6, 'Senha deve ter no mínimo 6 caracteres'),
@@ -25,9 +25,9 @@ const signupSchema = z.object({
 });
 
 const Auth = () => {
-  const navigate = useNavigate();
+  const navigate = useNavigate(); //encapsula o estado dentro do componente
   const { user, signIn, signUp } = useAuth();
-  
+  //encapsulamento, popis, Estados são propriedades privadas do componente
   const [loginForm, setLoginForm] = useState({ email: '', password: '' });
   const [signupForm, setSignupForm] = useState({ name: '', email: '', password: '', confirmPassword: '' });
   const [errors, setErrors] = useState<any>({});
@@ -38,7 +38,7 @@ const Auth = () => {
       navigate('/shop');
     }
   }, [user, navigate]);
-
+//abtracao e encapsulamento, pois, controla e abstrai o comportamento de login
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setErrors({});
@@ -46,7 +46,7 @@ const Auth = () => {
     try {
       loginSchema.parse(loginForm);
       setLoading(true);
-      const { error } = await signIn(loginForm.email, loginForm.password);
+      const { error } = await signIn(loginForm.email, loginForm.password);// função encapsulada do AuthContext
       if (!error) {
         navigate('/shop');
       }
@@ -96,7 +96,7 @@ const Auth = () => {
       <div className="w-full max-w-md">
         <Link to="/" className="flex items-center justify-center gap-2 mb-8">
           <ShoppingBag className="w-10 h-10 text-primary" />
-          <h1 className="text-3xl font-bold text-foreground">ShopHub</h1>
+          <h1 className="text-3xl font-bold text-foreground">FlexHub</h1>
         </Link>
 
         <Tabs defaultValue="login" className="w-full">

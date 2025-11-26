@@ -13,16 +13,16 @@ import { CreditCard, QrCode, FileText } from 'lucide-react';
 import { toast } from 'sonner';
 
 const Checkout = () => {
-  const { user } = useAuth();
+  const { user } = useAuth(); // o user é um OBJETO vindo de AuthContext, representa instância da entidade User
   const navigate = useNavigate();
-  const { cartItems, getTotal, clearCart } = useCart();
+  const { cartItems, getTotal, clearCart } = useCart(); // getTotal é um método encapsulado
   
   const [paymentMethod, setPaymentMethod] = useState('pix');
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (!user) {
-      navigate('/');
+      navigate('/');//logica de controle, como um construtor de classe
     } else if (cartItems.length === 0) {
       navigate('/cart');
     }
@@ -39,7 +39,7 @@ const Checkout = () => {
 
   setLoading(true);
   try {
-    // Criar pedido
+    // Criar o objeto Order no banco
     const { data: order, error: orderError } = await supabase
       .from('orders')
       .insert({
@@ -53,21 +53,21 @@ const Checkout = () => {
 
     if (orderError) throw orderError;
 
-    // Criar itens do pedido
+    // Criar itens do pedido, criando lista de objetos (instâncias)
     const orderItems = cartItems.map(item => ({
       order_id: order.id,
       product_id: item.productId,
       quantity: item.quantity,
       price: item.product?.price || 0,
     }));
-
+    // Inserindo as instâncias no banco
     const { error: itemsError } = await supabase
       .from('order_items')
       .insert(orderItems);
 
     if (itemsError) throw itemsError;
 
-    // Atualizar estoque de cada produto
+    // Atualizar estoque de cada produto atualizando o estado dos objetos do Product
     for (const item of cartItems) {
       const productId = item.productId;
       const purchasedQty = item.quantity;
@@ -83,7 +83,7 @@ const Checkout = () => {
 
       const newStock = Math.max(product.stock - purchasedQty, 0);
 
-      // Atualizar estoque
+      // Atualizar o atributo estoque
       const { error: updateError } = await supabase
         .from('products')
         .update({ stock: newStock })
