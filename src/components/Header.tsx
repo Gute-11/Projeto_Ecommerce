@@ -14,7 +14,7 @@ import {
 import { Badge } from '@/components/ui/badge';
 
 const Header = () => {
-  const { user, signOut } = useAuth();
+  const { user, signOut, isAdmin } = useAuth();
   const { cartItems } = useCart();
 
   return (
@@ -33,6 +33,13 @@ const Header = () => {
             <Link to="/orders" className="text-foreground hover:text-primary transition-colors">
               Meus Pedidos
             </Link>
+
+            {/* admins */}
+            {isAdmin && (
+              <Link to="/admin" className="text-foreground hover:text-primary transition-colors">
+                Admin
+              </Link>
+            )}
           </nav>
 
           <div className="flex items-center gap-4">
@@ -57,9 +64,7 @@ const Header = () => {
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="w-56">
-                <DropdownMenuLabel>
-                  Minha Conta
-                </DropdownMenuLabel>
+                <DropdownMenuLabel>Minha Conta</DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem asChild>
                   <Link to="/profile" className="cursor-pointer">

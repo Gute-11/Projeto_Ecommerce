@@ -35,50 +35,75 @@ const Checkout = () => {
   }).format(total);
 
   const handleConfirmOrder = async () => {
-    if (!user) return;
+  if (!user) return;
 
-    setLoading(true);
-    try {
-      // Criar pedido
-      const { data: order, error: orderError } = await supabase
-        .from('orders')
-        .insert({
-          user_id: user.id,
-          total,
-          status: 'pending',
-          payment_method: paymentMethod,
-        })
-        .select()
+  setLoading(true);
+  try {
+    // Criar pedido
+    const { data: order, error: orderError } = await supabase
+      .from('orders')
+      .insert({
+        user_id: user.id,
+        total,
+        status: 'pending',
+        payment_method: paymentMethod,
+      })
+      .select()
+      .single();
+
+    if (orderError) throw orderError;
+
+    // Criar itens do pedido
+    const orderItems = cartItems.map(item => ({
+      order_id: order.id,
+      product_id: item.productId,
+      quantity: item.quantity,
+      price: item.product?.price || 0,
+    }));
+
+    const { error: itemsError } = await supabase
+      .from('order_items')
+      .insert(orderItems);
+
+    if (itemsError) throw itemsError;
+
+    // Atualizar estoque de cada produto
+    for (const item of cartItems) {
+      const productId = item.productId;
+      const purchasedQty = item.quantity;
+
+      // Buscar estoque atual
+      const { data: product, error: productError } = await supabase
+        .from('products')
+        .select('stock')
+        .eq('id', productId)
         .single();
 
-      if (orderError) throw orderError;
+      if (productError) throw productError;
 
-      // Criar itens do pedido
-      const orderItems = cartItems.map(item => ({
-        order_id: order.id,
-        product_id: item.productId,
-        quantity: item.quantity,
-        price: item.product?.price || 0,
-      }));
+      const newStock = Math.max(product.stock - purchasedQty, 0);
 
-      const { error: itemsError } = await supabase
-        .from('order_items')
-        .insert(orderItems);
+      // Atualizar estoque
+      const { error: updateError } = await supabase
+        .from('products')
+        .update({ stock: newStock })
+        .eq('id', productId);
 
-      if (itemsError) throw itemsError;
-
-      // Limpar carrinho
-      await clearCart();
-
-      toast.success('Pedido realizado com sucesso!');
-      navigate('/orders');
-    } catch (error) {
-      console.error('Erro ao criar pedido:', error);
-      toast.error('Erro ao processar pedido');
-    } finally {
-      setLoading(false);
+      if (updateError) throw updateError;
     }
-  };
+
+    // Limpar carrinho
+    await clearCart();
+
+    toast.success('Pedido realizado com sucesso!');
+    navigate('/orders');
+  } catch (error) {
+    console.error('Erro ao criar pedido:', error);
+    toast.error('Erro ao processar pedido');
+  } finally {
+    setLoading(false);
+  }
+};
 
   return (
     <div className="min-h-screen bg-background">
