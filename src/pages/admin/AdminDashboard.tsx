@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
+import { useNavigate } from "react-router-dom";
 
 interface Product {
   id: string;
@@ -13,6 +14,7 @@ interface Product {
 }
 
 const AdminDashboard = () => {
+  const navigate = useNavigate();
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -93,6 +95,14 @@ const AdminDashboard = () => {
 
   return (
     <div className="container mx-auto p-4">
+
+      <button
+        onClick={() => navigate("/shop")}
+        className="mb-4 flex items-center gap-2 text-primary hover:underline"
+      >
+        <span className="text-lg">←</span> Voltar para a loja
+      </button>
+
       <h1 className="text-3xl font-bold mb-4">Painel Admin</h1>
 
       {/* Formulário de adição de produto */}

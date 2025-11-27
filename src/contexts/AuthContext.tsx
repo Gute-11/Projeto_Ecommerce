@@ -8,8 +8,8 @@ interface AuthContextType {
   session: Session | null;
   loading: boolean;
   isAdmin: boolean;
-  signUp: (email: string, password: string, name: string) => Promise<{ error: any }>;
-  signIn: (email: string, password: string) => Promise<{ error: any }>;
+  signUp: (email: string, password: string, name: string) => Promise<{ error: unknown }>;
+  signIn: (email: string, password: string) => Promise<{ error: unknown }>;
   signOut: () => Promise<void>;
 }
 //AuthContext é um objeto global que centraliza todo o comportamento e dados relacionados ao usuário logado.
@@ -90,7 +90,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
       toast.success('Conta criada com sucesso!');
       return { error: null };
-    } catch (error: any) {
+    } catch (error: unknown) {
       toast.error('Erro ao criar conta');
       return { error };
     }
@@ -110,7 +110,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
       toast.success('Login realizado com sucesso!');
       return { error: null };
-    } catch (error: any) {
+    } catch (error: unknown) {
       toast.error('Erro ao fazer login');
       return { error };
     }
@@ -120,7 +120,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     try {
       await supabase.auth.signOut();
       toast.success('Logout realizado com sucesso!');
-    } catch (error: any) {
+    } catch (error: unknown) {
       toast.error('Erro ao fazer logout');
     }
   };

@@ -210,6 +210,58 @@ export type Database = {
         }
         Relationships: []
       }
+
+      // === ADICIONANDO A TABELA ENDERECOS ===
+      enderecos: {
+        Row: {
+          id: string
+          user_id: string
+          cep: string
+          rua: string
+          numero: string
+          complemento: string | null
+          bairro: string | null
+          cidade: string
+          estado: string
+          tipo: string
+          padrao: boolean
+          criado_em: string
+        }
+        Insert: {
+          id?: string
+          user_id: string
+          cep: string
+          rua: string
+          numero: string
+          complemento?: string | null
+          bairro?: string | null
+          cidade: string
+          estado: string
+          tipo?: string
+          padrao?: boolean
+          criado_em?: string
+        }
+        Update: {
+          cep?: string
+          rua?: string
+          numero?: string
+          complemento?: string | null
+          bairro?: string | null
+          cidade?: string
+          estado?: string
+          tipo?: string
+          padrao?: boolean
+        }
+        Relationships: [
+          {
+            foreignKeyName: "enderecos_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          }
+        ]
+      }
     }
     Views: {
       [_ in never]: never
